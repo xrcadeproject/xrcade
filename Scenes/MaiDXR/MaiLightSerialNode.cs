@@ -22,6 +22,8 @@ public partial class MaiLightSerialNode : Node
 	public Light3D BodyLight, DisplayLight, SideLight;
     [Export]
     public int FadeResolution = 16;
+    [Export (PropertyHint.Range, "0,1")]
+    public float ButtonLightNormalizeDimmer = 0.5f; // 0-1
 
     private List<Light3D> RingLights;
     private SerialPort lightSerial;
@@ -31,6 +33,12 @@ public partial class MaiLightSerialNode : Node
     private byte[] header = new byte[3];
     private List<byte> dataBytes = new List<byte>();
     private List<byte[]> dataBytesList = new List<byte[]>();
+    private bool isFadeFlag = false;
+    private int[] fadeIndex = new int[2];
+    private float fadeElapsed = 0;
+    private float fadeDuration = 0;
+    private Color fadeColor = new Color();
+    private Color fadePrevColor = new Color();
     private enum CMD : byte
     {
         StartByte = 224,
@@ -49,9 +57,29 @@ public partial class MaiLightSerialNode : Node
         Timeout = 17,
     }
     
-    public override void _Ready()
+    public override async void _Ready()
     {
         RingLights = RingLightsRoot.GetChildren().OfType<Light3D>().ToList();
+
+        if (DisplayLight != null) // Godot bug fix see github.com/godotengine/godot/issues/78253
+        {
+            await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
+            DisplayLight.LightCullMask = 4294443007; 
+        }
+
+        // Turn off all lights
+        if (RingLights == null || DisplayLight == null || BodyLight == null || SideLight == null)
+        {
+            GD.Print("Lights not found or not assigned properly. Please check the lights.");
+            return;
+        }
+        foreach (var light in RingLights)
+            light.LightColor = new Color(0, 0, 0);
+        
+        BodyLight.LightColor = new Color(0, 0, 0);
+        DisplayLight.LightColor = new Color(0, 0, 0);
+        SideLight.LightColor = new Color(0, 0, 0);
+
         // GD.Print("Ring Lights: " + RingLights.Count);
         initialSerial(Port, BaudRate);
     }
@@ -59,9 +87,13 @@ public partial class MaiLightSerialNode : Node
     {
         if (dataBytesList.Count > 0)
         {
-            requestCMD(dataBytesList[0]);
-            dataBytesList.RemoveAt(0);
+            for (int i = 0; i < dataBytesList.Count; i++)
+            {
+                executeCMD(dataBytesList[i]);
+            }
+            dataBytesList.Clear();
         }
+        updateRingLightFadeProcess(delta);
     }
 
     public override void _ExitTree()
@@ -103,41 +135,42 @@ public partial class MaiLightSerialNode : Node
                 dataBytes = new List<byte>();
                 for (int i = 0; i <= header[2]; i++) 
                     dataBytes.Add((byte)_serial.ReadByte());
-                // GD.Print("Raw Data: " + BitConverter.ToString(dataBytes.ToArray()));
+                GD.Print(Port + " Raw Data: " + BitConverter.ToString(dataBytes.ToArray()));
                 dataBytesList.Add(dataBytes.ToArray());
             }
         }
     }
 
-    private void requestCMD(byte[] data)
+    private bool executeCMD(byte[] data)
     {
         // GD.Print("CMD: " + data[0]);
         if (data.Length < 1)
-            return;
+            return false;
         switch (data[0])
         {
             case (byte)CMD.LedFet:
-                OnCabLightUpdate(Color.Color8(data[1], data[2], data[3]));
-                break;
+                setCabLight(Color.Color8(data[1], data[2], data[3]));
+                return false;
             case (byte)CMD.LedGs8Bit:
             case (byte)CMD.LedGs8BitMulti:
             case (byte)CMD.LedGs8BitMultiFade:
                 ringLightDataList.Add(data);
-                break;
+
+                return false;
             case (byte)CMD.LedGs8BitUpdate:
+                // isFadeFlag = false;
                 onRingLightUpdateCMD();
-                break;
+                return true;
             default:
-                break;
+                return false;
         }
     }
 
     private void onRingLightUpdateCMD()
     {
-        byte[] prevdata = new byte[16]; // 16 is a probable max length of data
         if (ringLightDataList.Count < 1)
             return;
-        // GD.Print("Ring Light Update: " + ringLightDataList.Count);
+        GD.Print(Port + " Ring Light Update: " + ringLightDataList.Count);
         
         foreach (var data in ringLightDataList)
         {
@@ -145,22 +178,18 @@ public partial class MaiLightSerialNode : Node
             switch (data[0])
             {
                 case (byte)CMD.LedGs8Bit:
-                    // GD.Print("Ring Light Single");
-                    // GD.Print(data[1]);
-                    OnRingLightUpdate(data[1], Color.Color8(data[2], data[3], data[4]));
+                    GD.Print(Port + " Ring Light Single: " + BitConverter.ToString(data));
+                    setRingLight(data[1], Color.Color8(data[2], data[3], data[4]));
                     break;
                 case (byte)CMD.LedGs8BitMulti:
-                    // GD.Print("Ring Light Multi");
-                    // GD.Print(data[1] + " " + data[2]);
+                    GD.Print(Port + " Ring Light Multi: " + BitConverter.ToString(data));
                     for (int i = (int)data[1]; i < (int)data[2]; i++)
-                        OnRingLightUpdate(i, Color.Color8(data[4], data[5], data[6]));
-                    prevdata = data;
+                        setRingLight(i, Color.Color8(data[4], data[5], data[6]));
+                    fadePrevColor = Color.Color8(data[4], data[5], data[6]);
                     break;
                 case (byte)CMD.LedGs8BitMultiFade:
-                    // GD.Print("Ring Light Fade");
-                    // GD.Print(BitConverter.ToString(data) + " " + BitConverter.ToString(prevdata));
-                    updateRingLightFade(data, prevdata);
-                    prevdata = data;                     
+                    GD.Print(Port + " Ring Light Fade: " + BitConverter.ToString(data));
+                    updateRingLightFade(data);                 
                     break;
                 default:
                     break;
@@ -169,43 +198,62 @@ public partial class MaiLightSerialNode : Node
         ringLightDataList.Clear();
     }
 
-    async private void updateRingLightFade(byte[] data, byte[] prevdata)
+    private void updateRingLightFade(byte[] data)
     {
-        float elapsed = 0;
-        float duration = 4095 / data[7] * 8 / 1000;
-        Color prevColor = Color.Color8(prevdata[4], prevdata[5], prevdata[6]);
-        Color nowColor = Color.Color8(data[4], data[5], data[6]);
-        while (elapsed < duration)
+        fadeElapsed = 0;
+        if (data[7] == 0)
+            fadeDuration = 0;
+        else
+            fadeDuration = 4095f / (float)data[7] * 8f / 1000f;
+        if (data[2] > RingLights.Count)
+            data[2] = (byte)RingLights.Count;
+        fadeIndex[0] = data[1];
+        fadeIndex[1] = data[2];
+        fadeColor = Color.Color8(data[4], data[5], data[6]);
+        isFadeFlag = true;
+    }
+
+    private void updateRingLightFadeProcess(double deltaTime)
+    {
+        if (!isFadeFlag)
+            return;
+        
+        fadeElapsed += (float)deltaTime;
+        float progress = fadeElapsed / fadeDuration;
+        
+        if (progress > 1)
         {
-            float progress = elapsed / duration;
-            for (int i = data[1]; i < data[2]; i++)
-                OnRingLightUpdate(i, prevColor.Lerp(nowColor, progress));
-            await Task.Delay(FadeResolution);
-            elapsed += FadeResolution / 1000f;
+            isFadeFlag = false;
+            progress = 1;
+            fadePrevColor = fadeColor;
         }
+        // GD.Print(Port + " Ring Light Fade Process " + fadeElapsed + " " + fadeDuration + " " + progress);
+        // GD.Print(Port + " Ring Light Fade Progress Color Before " + RingLights[0].LightColor);
+        for (int i = fadeIndex[0]; i < fadeIndex[1]; i++)
+            RingLights[i].LightColor = dimmerColor(fadePrevColor.Lerp(fadeColor, progress));
+        // GD.Print(Port + " Ring Light Fade Progress Color " + RingLights[0].LightColor);
     }
 
-    private void OnCabLightUpdate(Color data) { 
-        CabLightUpdate(data);
-    }
-    private void OnRingLightUpdate(int index, Color color) { 
-        // GD.Print("Ring Light Update");
-        // GD.Print(index + " " + color);
-        RingLightUpdate(index, color);
-    }
-
-    private void CabLightUpdate(Color data)
-	{
-		if (BodyLight != null)
+    private void setCabLight(Color data) { 
+        if (BodyLight != null)
 			BodyLight.LightColor = new Color(data.R, data.R, data.R);
 		if (DisplayLight != null)
 			DisplayLight.LightColor = new Color(data.G, data.G, data.G);
 		if (SideLight != null)
 			SideLight.LightColor = new Color(data.B, data.B, data.B);
-	}
-    private void RingLightUpdate(int index, Color color)
-	{
+    }
+    private void setRingLight(int index, Color color) { 
+        // GD.Print("Ring Light Update");
+        // GD.Print(index + " " + color);
+        color = dimmerColor(color);
+
 		if (RingLights != null && RingLights.Count > index)
 			RingLights[index].LightColor = color;
-	}
+    }
+    private Color dimmerColor(Color color)
+    {
+        float colorSum = color.R + color.G + color.B;
+        float factor = Math.Max(0, colorSum - 1) / 2 * ButtonLightNormalizeDimmer;
+        return new Color(color.R - factor, color.G - factor, color.B - factor);
+    }
 }
