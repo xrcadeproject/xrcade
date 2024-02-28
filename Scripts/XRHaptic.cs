@@ -22,9 +22,9 @@ public partial class XRHaptic : Node
 
 	private static Dictionary<string, double[]> hapticTypePreset = new Dictionary<string, double[]>()
 	{
-		{ "Light", new double[] { 0.3, 0.02 } },
-		{ "Medium", new double[] { 0.6, 0.06 } },
-		{ "Heavy", new double[] { 1.0, 0.15 } }
+		{ "Light", new double[] { 0.5, 0.02 } },
+		{ "Medium", new double[] { 0.7, 0.06 } },
+		{ "Heavy", new double[] { 1.0, 0.1 } }
 	};
 
 	public override void _Ready()
