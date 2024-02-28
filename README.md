@@ -20,7 +20,7 @@ Xrcade is a project that simulates arcade cabinets on XR-supported devices. It i
 
 - [x] Switch from Unity to Godot
 - [x] Basic VR interaction
-- [ ] Start menu
+- [x] Start menu
 - [ ] Cabinet selection implementation
   - [ ] Cabinet browser
   - [ ] Runtime cabinet loader
@@ -35,8 +35,8 @@ Xrcade is a project that simulates arcade cabinets on XR-supported devices. It i
   - [ ] Full-body capture support
 - [ ] Universal settings panel
 - [ ] Hooks
-  - [ ] DX11 hook for game capture
-  - [ ] DX11 hook DLL
+  - [x] DX11 hook for game capture
+  - [x] DX11 hook DLL
   - [ ] DX9 hook for game capture
   - [ ] DX9 hook DLL
   - [ ] Genetic serial hook for I/O
