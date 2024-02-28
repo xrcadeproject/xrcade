@@ -66,8 +66,8 @@ theme/custom="res://Themes/default_theme.tres"
 [physics]
 
 3d/run_on_separate_thread=true
-common/physics_ticks_per_second=120
-common/max_physics_steps_per_frame=4
+common/physics_ticks_per_second=240
+3d/physics_engine="GodotPhysics3D"
 
 [rendering]
 
