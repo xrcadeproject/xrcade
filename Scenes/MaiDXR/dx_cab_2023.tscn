@@ -1,11 +1,13 @@
-[gd_scene load_steps=119 format=3 uid="uid://d4k8e0tnj8xvx"]
+[gd_scene load_steps=121 format=3 uid="uid://d4k8e0tnj8xvx"]
 
 [ext_resource type="Texture2D" uid="uid://cm7cqg0q6aqsj" path="res://Models/DXCab2023/DXCab2023_BodyP1Texture.png" id="1_ghkog"]
 [ext_resource type="Texture2D" uid="uid://c42e567m5xwye" path="res://Models/DXCab2023/DXCab2023_BodyP1Texture_1.png" id="2_ap4fp"]
 [ext_resource type="Material" uid="uid://dmtwdx3xhad0e" path="res://Scenes/MaiDXR/mai_display_material.tres" id="3_em3hs"]
 [ext_resource type="Texture2D" uid="uid://btuane0d3mb3t" path="res://Models/DXCab2023/DXCab2023_BodyP2Texture.png" id="3_twtg8"]
 [ext_resource type="Script" path="res://Scenes/MaiDXR/MaiTouchSerial.cs" id="5_em5tn"]
+[ext_resource type="Script" path="res://Scenes/MaiDXR/MaiTouchArea.cs" id="5_if7sb"]
 [ext_resource type="Script" path="res://Scripts/InjectCaptureHook.cs" id="5_m3qyu"]
+[ext_resource type="Script" path="res://Scenes/MaiDXR/MaiButtonArea.cs" id="6_3y225"]
 [ext_resource type="Script" path="res://Scenes/MaiDXR/MaiLightSerial.cs" id="6_5oknp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g4hww"]
@@ -335,7 +337,7 @@ cull_mode = 2
 albedo_color = Color(0.843009, 0.843009, 0.843009, 1)
 roughness = 0.295455
 emission_enabled = true
-emission = Color(0, 0.719241, 1, 1)
+emission = Color(0.177626, 0.711884, 1, 1)
 emission_energy_multiplier = 2.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_bofbm"]
@@ -1164,11 +1166,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.515, 0.0266603, 0)
 mesh = SubResource("ArrayMesh_xul1v")
 skeleton = NodePath("")
 
-[node name="BodyLight P1" type="OmniLight3D" parent="Body P1"]
-transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.717609, 0.412038)
-light_energy = 0.2
-omni_range = 1.0
-
 [node name="Controller P1" type="Node3D" parent="Body P1"]
 transform = Transform3D(1.03, 0, 0, 0, 0.352281, -0.967883, 0, 0.967883, 0.352281, -0.0039928, 1.21575, 0.163062)
 
@@ -1231,21 +1228,27 @@ mesh = SubResource("ArrayMesh_mkfpm")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("3_em3hs")
 
+[node name="BodyLight P1" type="OmniLight3D" parent="Body P1"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.717609, 0.412038)
+light_energy = 0.1
+omni_range = 1.0
+
 [node name="DisplayLight P1" type="OmniLight3D" parent="Body P1"]
 transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 1.21965, 0.224439)
-light_energy = 0.1
+light_energy = 0.05
 light_cull_mask = 4294967293
 omni_range = 1.0
+
+[node name="SideLight P1" type="OmniLight3D" parent="Body P1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.598387, 1.80002, -0.166783)
+light_energy = 0.5
+light_cull_mask = 4294967293
+omni_range = 0.23
 
 [node name="Body P2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.515, 1.07431, -0.0904881)
 mesh = SubResource("ArrayMesh_58l3a")
 skeleton = NodePath("")
-
-[node name="BodyLight P2" type="OmniLight3D" parent="Body P2"]
-transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 1.01328e-05, -0.330046, 0.502526)
-light_energy = 0.2
-omni_range = 1.0
 
 [node name="Controller P2" type="Node3D" parent="Body P2"]
 transform = Transform3D(1.03, 0, 0, 0, 0.352281, -0.967883, 0, 0.967883, 0.352281, 0, 0.168096, 0.25355)
@@ -1302,17 +1305,28 @@ mesh = SubResource("ArrayMesh_1cmfw")
 skeleton = NodePath("")
 
 [node name="Display P2" type="MeshInstance3D" parent="Body P2"]
-transform = Transform3D(1.00024, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0.000189183, 0.349966, 0.161323)
+transform = Transform3D(1.00024, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0.000189185, 0.349966, 0.161323)
 layers = 2
 mesh = SubResource("ArrayMesh_16766")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("3_em3hs")
 
+[node name="BodyLight P2" type="OmniLight3D" parent="Body P2"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 1.01328e-05, -0.330046, 0.502526)
+light_energy = 0.1
+omni_range = 1.0
+
 [node name="DisplayLight P2" type="OmniLight3D" parent="Body P2"]
 transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 1.01328e-05, 0.171994, 0.314927)
-light_energy = 0.1
+light_energy = 0.05
 light_cull_mask = 4294967293
 omni_range = 1.0
+
+[node name="SideLight P2" type="OmniLight3D" parent="Body P2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.644326, 0.752373, -0.0762952)
+light_energy = 0.5
+light_cull_mask = 4294967293
+omni_range = 0.23
 
 [node name="Side Box Front" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.59259, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02743, -0.131332)
@@ -1352,206 +1366,240 @@ skeleton = NodePath("")
 [node name="Touch Hitbox P1" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.34202, -0.939693, 0, 0.939693, 0.34202, -0.515, 1.19263, 0.0189865)
 
-[node name="A1" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="A1" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 0.0765145, -0.113368, -0.185835)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/A1"]
 shape = SubResource("ConvexPolygonShape3D_m27kr")
 
-[node name="A2" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="A2" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(-1, 0, -2.8857e-07, 0, 1, 0, 2.8857e-07, 0, -1, 0.185421, -0.113368, -0.0770238)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/A2"]
 shape = SubResource("ConvexPolygonShape3D_mjhfw")
 
-[node name="A3" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="A3" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 0.186927, -0.113368, 0.077356)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/A3"]
 shape = SubResource("ConvexPolygonShape3D_k11qg")
 
-[node name="A4" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="A4" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(1.78814e-07, 0, 1, 0, 1, 0, -1, 0, 1.78814e-07, 0.0775324, -0.113368, 0.186317)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/A4"]
 shape = SubResource("ConvexPolygonShape3D_evbtk")
 
-[node name="A5" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="A5" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -0.0753397, -0.113368, 0.186262)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/A5"]
 shape = SubResource("ConvexPolygonShape3D_yg3yd")
 
-[node name="A6" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="A6" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.184857, -0.113367, 0.0775055)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/A6"]
 shape = SubResource("ConvexPolygonShape3D_f63ol")
 
-[node name="A7" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="A7" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -0.185101, -0.113368, -0.076603)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/A7"]
 shape = SubResource("ConvexPolygonShape3D_px77e")
 
-[node name="A8" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="A8" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(5.36442e-07, 0, -1, 0, 1, 0, 1, 0, 5.36442e-07, -0.0763583, -0.113367, -0.185658)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/A8"]
 shape = SubResource("ConvexPolygonShape3D_csrxw")
 
-[node name="B1" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="B1" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.697195, 0, -0.716882, 0, 1, 0, 0.716882, 0, 0.697195, 0.0396246, -0.116045, -0.0955601)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/B1"]
 shape = SubResource("ConvexPolygonShape3D_gesrm")
 
-[node name="B2" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="B2" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(-0.0270077, 0, -0.999635, 0, 1, 0, 0.999635, 0, -0.0270077, 0.0963929, -0.116045, -0.0401121)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/B2"]
 shape = SubResource("ConvexPolygonShape3D_h3top")
 
-[node name="B3" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="B3" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(-0.696451, 0, -0.717604, 0, 1, 0, 0.717604, 0, -0.696451, 0.096888, -0.116045, 0.0404199)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/B3"]
 shape = SubResource("ConvexPolygonShape3D_rdyux")
 
-[node name="B4" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="B4" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(-0.999998, 0, 0.0020117, 0, 1, 0, -0.0020117, 0, -0.999998, 0.0416049, -0.116045, 0.0960328)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/B4"]
 shape = SubResource("ConvexPolygonShape3D_ycv4y")
 
-[node name="B5" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="B5" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(-0.720128, 0, 0.693841, 0, 1, 0, -0.693841, 0, -0.720128, -0.0390919, -0.116045, 0.0976832)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/B5"]
 shape = SubResource("ConvexPolygonShape3D_ka2lx")
 
-[node name="B6" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="B6" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.0145355, 0, 0.999894, 0, 1, 0, -0.999894, 0, 0.0145355, -0.0956953, -0.116045, 0.0410799)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/B6"]
 shape = SubResource("ConvexPolygonShape3D_yuek5")
 
-[node name="B7" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="B7" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.719378, 0, 0.694619, 0, 1, 0, -0.694619, 0, 0.719378, -0.096577, -0.116045, -0.0389798)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/B7"]
 shape = SubResource("ConvexPolygonShape3D_omm0p")
 
-[node name="B8" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="B8" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0401728, -0.116045, -0.0953896)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/B8"]
 shape = SubResource("ConvexPolygonShape3D_kqmin")
 
-[node name="C1" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="C1" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(-0.923879, 0, 0.382684, 0, 1, 0, -0.382684, 0, -0.923879, 0.000153899, -0.116045, 0.000163382)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/C1"]
 shape = SubResource("ConvexPolygonShape3D_apevj")
 
-[node name="C2" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="C2" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.92388, 0, -0.382684, 0, 1, 0, 0.382684, 0, 0.92388, 0.00015384, -0.116045, 0.000163378)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/C2"]
 shape = SubResource("ConvexPolygonShape3D_foigl")
 
-[node name="D1" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="D1" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(1.78814e-07, 0, -1, 0, 1, 0, 1, 0, 1.78814e-07, 0.00103849, -0.118523, -0.218113)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/D1"]
 shape = SubResource("ConvexPolygonShape3D_imbdo")
 
-[node name="D2" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="D2" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 0.155586, -0.118523, -0.153969)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/D2"]
 shape = SubResource("ConvexPolygonShape3D_nvs5x")
 
-[node name="D3" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="D3" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(-1, 0, 2.8857e-07, 0, 1, 0, -2.8857e-07, 0, -1, 0.216724, -0.116005, 0.00122179)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/D3"]
 shape = SubResource("ConvexPolygonShape3D_r4e84")
 
-[node name="D4" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="D4" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 0.155631, -0.118523, 0.155939)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/D4"]
 shape = SubResource("ConvexPolygonShape3D_cdfk6")
 
-[node name="D5" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="D5" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(5.36442e-07, 0, 1, 0, 1, 0, -1, 0, 5.36442e-07, -0.000202954, -0.118523, 0.219272)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/D5"]
 shape = SubResource("ConvexPolygonShape3D_lhkmf")
 
-[node name="D6" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="D6" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -0.154746, -0.118523, 0.155186)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/D6"]
 shape = SubResource("ConvexPolygonShape3D_niwub")
 
-[node name="D7" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="D7" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.218438, -0.118523, -0.000528838)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/D7"]
 shape = SubResource("ConvexPolygonShape3D_w28s2")
 
-[node name="D8" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="D8" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -0.153578, -0.118523, -0.155006)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/D8"]
 shape = SubResource("ConvexPolygonShape3D_6st0x")
 
-[node name="E1" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="E1" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.000185311, -0.116045, -0.145188)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/E1"]
 shape = SubResource("ConvexPolygonShape3D_4t4dv")
 
-[node name="E2" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="E2" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.103387, -0.116045, -0.102763)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/E2"]
 shape = SubResource("ConvexPolygonShape3D_spp4p")
 
-[node name="E3" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="E3" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.146024, -0.116045, -0.000169793)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/E3"]
 shape = SubResource("ConvexPolygonShape3D_ejn4p")
 
-[node name="E4" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="E4" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.103612, -0.116045, 0.102997)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/E4"]
 shape = SubResource("ConvexPolygonShape3D_8lm7s")
 
-[node name="E5" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="E5" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 8.94666e-05, -0.116045, 0.146809)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/E5"]
 shape = SubResource("ConvexPolygonShape3D_j5vto")
 
-[node name="E6" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="E6" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.102598, -0.116045, 0.103246)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/E6"]
 shape = SubResource("ConvexPolygonShape3D_xtgng")
 
-[node name="E7" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="E7" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -0.145347, -0.116045, -0.000426315)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/E7"]
 shape = SubResource("ConvexPolygonShape3D_te0kt")
 
-[node name="E8" type="StaticBody3D" parent="Touch Hitbox P1"]
+[node name="E8" type="Area3D" parent="Touch Hitbox P1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.102581, -0.116045, -0.102737)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P1/E8"]
 shape = SubResource("ConvexPolygonShape3D_5uk4i")
@@ -1559,206 +1607,240 @@ shape = SubResource("ConvexPolygonShape3D_5uk4i")
 [node name="Touch Hitbox P2" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.34202, -0.939693, 0, 0.939693, 0.34202, 0.515, 1.193, 0.019)
 
-[node name="A1" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="A1" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 0.0765145, -0.113368, -0.185835)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/A1"]
 shape = SubResource("ConvexPolygonShape3D_m27kr")
 
-[node name="A2" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="A2" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(-1, 0, -2.8857e-07, 0, 1, 0, 2.8857e-07, 0, -1, 0.185421, -0.113368, -0.0770238)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/A2"]
 shape = SubResource("ConvexPolygonShape3D_mjhfw")
 
-[node name="A3" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="A3" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 0.186927, -0.113368, 0.077356)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/A3"]
 shape = SubResource("ConvexPolygonShape3D_k11qg")
 
-[node name="A4" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="A4" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(1.78814e-07, 0, 1, 0, 1, 0, -1, 0, 1.78814e-07, 0.0775324, -0.113368, 0.186317)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/A4"]
 shape = SubResource("ConvexPolygonShape3D_evbtk")
 
-[node name="A5" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="A5" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -0.0753397, -0.113368, 0.186262)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/A5"]
 shape = SubResource("ConvexPolygonShape3D_yg3yd")
 
-[node name="A6" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="A6" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.184857, -0.113367, 0.0775055)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/A6"]
 shape = SubResource("ConvexPolygonShape3D_f63ol")
 
-[node name="A7" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="A7" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -0.185101, -0.113368, -0.076603)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/A7"]
 shape = SubResource("ConvexPolygonShape3D_px77e")
 
-[node name="A8" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="A8" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(5.36442e-07, 0, -1, 0, 1, 0, 1, 0, 5.36442e-07, -0.0763583, -0.113367, -0.185658)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/A8"]
 shape = SubResource("ConvexPolygonShape3D_csrxw")
 
-[node name="B1" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="B1" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.697195, 0, -0.716882, 0, 1, 0, 0.716882, 0, 0.697195, 0.0396246, -0.116045, -0.0955601)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/B1"]
 shape = SubResource("ConvexPolygonShape3D_gesrm")
 
-[node name="B2" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="B2" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(-0.0270077, 0, -0.999635, 0, 1, 0, 0.999635, 0, -0.0270077, 0.0963929, -0.116045, -0.0401121)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/B2"]
 shape = SubResource("ConvexPolygonShape3D_h3top")
 
-[node name="B3" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="B3" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(-0.696451, 0, -0.717604, 0, 1, 0, 0.717604, 0, -0.696451, 0.096888, -0.116045, 0.0404199)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/B3"]
 shape = SubResource("ConvexPolygonShape3D_rdyux")
 
-[node name="B4" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="B4" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(-0.999998, 0, 0.0020117, 0, 1, 0, -0.0020117, 0, -0.999998, 0.0416049, -0.116045, 0.0960328)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/B4"]
 shape = SubResource("ConvexPolygonShape3D_ycv4y")
 
-[node name="B5" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="B5" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(-0.720128, 0, 0.693841, 0, 1, 0, -0.693841, 0, -0.720128, -0.0390919, -0.116045, 0.0976832)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/B5"]
 shape = SubResource("ConvexPolygonShape3D_ka2lx")
 
-[node name="B6" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="B6" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.0145355, 0, 0.999894, 0, 1, 0, -0.999894, 0, 0.0145355, -0.0956953, -0.116045, 0.0410799)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/B6"]
 shape = SubResource("ConvexPolygonShape3D_yuek5")
 
-[node name="B7" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="B7" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.719378, 0, 0.694619, 0, 1, 0, -0.694619, 0, 0.719378, -0.096577, -0.116045, -0.0389798)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/B7"]
 shape = SubResource("ConvexPolygonShape3D_omm0p")
 
-[node name="B8" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="B8" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0401728, -0.116045, -0.0953896)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/B8"]
 shape = SubResource("ConvexPolygonShape3D_kqmin")
 
-[node name="C1" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="C1" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(-0.923879, 0, 0.382684, 0, 1, 0, -0.382684, 0, -0.923879, 0.000153899, -0.116045, 0.000163382)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/C1"]
 shape = SubResource("ConvexPolygonShape3D_apevj")
 
-[node name="C2" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="C2" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.92388, 0, -0.382684, 0, 1, 0, 0.382684, 0, 0.92388, 0.00015384, -0.116045, 0.000163378)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/C2"]
 shape = SubResource("ConvexPolygonShape3D_foigl")
 
-[node name="D1" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="D1" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(1.78814e-07, 0, -1, 0, 1, 0, 1, 0, 1.78814e-07, 0.00103849, -0.118523, -0.218113)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/D1"]
 shape = SubResource("ConvexPolygonShape3D_imbdo")
 
-[node name="D2" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="D2" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 0.155586, -0.118523, -0.153969)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/D2"]
 shape = SubResource("ConvexPolygonShape3D_nvs5x")
 
-[node name="D3" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="D3" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(-1, 0, 2.8857e-07, 0, 1, 0, -2.8857e-07, 0, -1, 0.216724, -0.116005, 0.00122179)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/D3"]
 shape = SubResource("ConvexPolygonShape3D_r4e84")
 
-[node name="D4" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="D4" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 0.155631, -0.118523, 0.155939)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/D4"]
 shape = SubResource("ConvexPolygonShape3D_cdfk6")
 
-[node name="D5" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="D5" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(5.36442e-07, 0, 1, 0, 1, 0, -1, 0, 5.36442e-07, -0.000202954, -0.118523, 0.219272)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/D5"]
 shape = SubResource("ConvexPolygonShape3D_lhkmf")
 
-[node name="D6" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="D6" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -0.154746, -0.118523, 0.155186)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/D6"]
 shape = SubResource("ConvexPolygonShape3D_niwub")
 
-[node name="D7" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="D7" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.218438, -0.118523, -0.000528838)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/D7"]
 shape = SubResource("ConvexPolygonShape3D_w28s2")
 
-[node name="D8" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="D8" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -0.153578, -0.118523, -0.155006)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/D8"]
 shape = SubResource("ConvexPolygonShape3D_6st0x")
 
-[node name="E1" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="E1" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.000185311, -0.116045, -0.145188)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/E1"]
 shape = SubResource("ConvexPolygonShape3D_4t4dv")
 
-[node name="E2" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="E2" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.103387, -0.116045, -0.102763)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/E2"]
 shape = SubResource("ConvexPolygonShape3D_spp4p")
 
-[node name="E3" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="E3" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.146024, -0.116045, -0.000169793)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/E3"]
 shape = SubResource("ConvexPolygonShape3D_ejn4p")
 
-[node name="E4" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="E4" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.103612, -0.116045, 0.102997)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/E4"]
 shape = SubResource("ConvexPolygonShape3D_8lm7s")
 
-[node name="E5" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="E5" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 8.94666e-05, -0.116045, 0.146809)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/E5"]
 shape = SubResource("ConvexPolygonShape3D_j5vto")
 
-[node name="E6" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="E6" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.102598, -0.116045, 0.103246)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/E6"]
 shape = SubResource("ConvexPolygonShape3D_xtgng")
 
-[node name="E7" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="E7" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -0.145347, -0.116045, -0.000426315)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/E7"]
 shape = SubResource("ConvexPolygonShape3D_te0kt")
 
-[node name="E8" type="StaticBody3D" parent="Touch Hitbox P2"]
+[node name="E8" type="Area3D" parent="Touch Hitbox P2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.102581, -0.116045, -0.102737)
+script = ExtResource("5_if7sb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Touch Hitbox P2/E8"]
 shape = SubResource("ConvexPolygonShape3D_5uk4i")
@@ -1766,50 +1848,58 @@ shape = SubResource("ConvexPolygonShape3D_5uk4i")
 [node name="Button Hitbox P1" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.34202, -0.939693, 0, 0.939693, 0.34202, -0.515, 1.19032, 0.0198262)
 
-[node name="Button Hitbox 1" type="StaticBody3D" parent="Button Hitbox P1"]
+[node name="Button Hitbox 1" type="Area3D" parent="Button Hitbox P1"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, 0.124573, -0.0104674, -0.29818)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P1/Button Hitbox 1"]
 shape = SubResource("ConvexPolygonShape3D_hh61t")
 
-[node name="Button Hitbox 2" type="StaticBody3D" parent="Button Hitbox P1"]
+[node name="Button Hitbox 2" type="Area3D" parent="Button Hitbox P1"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, 0.299379, -0.0104688, -0.122233)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P1/Button Hitbox 2"]
 shape = SubResource("ConvexPolygonShape3D_vwfll")
 
-[node name="Button Hitbox 3" type="StaticBody3D" parent="Button Hitbox P1"]
+[node name="Button Hitbox 3" type="Area3D" parent="Button Hitbox P1"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, 0.298331, -0.0104673, 0.124353)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P1/Button Hitbox 3"]
 shape = SubResource("ConvexPolygonShape3D_76ppx")
 
-[node name="Button Hitbox 4" type="StaticBody3D" parent="Button Hitbox P1"]
+[node name="Button Hitbox 4" type="Area3D" parent="Button Hitbox P1"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, 0.121612, -0.0104681, 0.29967)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P1/Button Hitbox 4"]
 shape = SubResource("ConvexPolygonShape3D_p4c6t")
 
-[node name="Button Hitbox 5" type="StaticBody3D" parent="Button Hitbox P1"]
+[node name="Button Hitbox 5" type="Area3D" parent="Button Hitbox P1"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, -0.125841, -0.0104672, 0.299114)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P1/Button Hitbox 5"]
 shape = SubResource("ConvexPolygonShape3D_rsli4")
 
-[node name="Button Hitbox 6" type="StaticBody3D" parent="Button Hitbox P1"]
+[node name="Button Hitbox 6" type="Area3D" parent="Button Hitbox P1"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, -0.298886, -0.0104655, 0.122883)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P1/Button Hitbox 6"]
 shape = SubResource("ConvexPolygonShape3D_rx71p")
 
-[node name="Button Hitbox 7" type="StaticBody3D" parent="Button Hitbox P1"]
+[node name="Button Hitbox 7" type="Area3D" parent="Button Hitbox P1"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, -0.299144, -0.0104662, -0.123436)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P1/Button Hitbox 7"]
 shape = SubResource("ConvexPolygonShape3D_gt3lt")
 
-[node name="Button Hitbox 8" type="StaticBody3D" parent="Button Hitbox P1"]
+[node name="Button Hitbox 8" type="Area3D" parent="Button Hitbox P1"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, -0.124777, -0.0104695, -0.299805)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P1/Button Hitbox 8"]
 shape = SubResource("ConvexPolygonShape3D_h2b11")
@@ -1817,50 +1907,58 @@ shape = SubResource("ConvexPolygonShape3D_h2b11")
 [node name="Button Hitbox P2" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.34202, -0.939693, 0, 0.939693, 0.34202, 0.515, 1.19, 0.02)
 
-[node name="Button Hitbox 1" type="StaticBody3D" parent="Button Hitbox P2"]
+[node name="Button Hitbox 1" type="Area3D" parent="Button Hitbox P2"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, 0.124573, -0.0104674, -0.29818)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P2/Button Hitbox 1"]
 shape = SubResource("ConvexPolygonShape3D_hh61t")
 
-[node name="Button Hitbox 2" type="StaticBody3D" parent="Button Hitbox P2"]
+[node name="Button Hitbox 2" type="Area3D" parent="Button Hitbox P2"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, 0.299379, -0.0104688, -0.122233)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P2/Button Hitbox 2"]
 shape = SubResource("ConvexPolygonShape3D_vwfll")
 
-[node name="Button Hitbox 3" type="StaticBody3D" parent="Button Hitbox P2"]
+[node name="Button Hitbox 3" type="Area3D" parent="Button Hitbox P2"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, 0.298331, -0.0104673, 0.124353)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P2/Button Hitbox 3"]
 shape = SubResource("ConvexPolygonShape3D_76ppx")
 
-[node name="Button Hitbox 4" type="StaticBody3D" parent="Button Hitbox P2"]
+[node name="Button Hitbox 4" type="Area3D" parent="Button Hitbox P2"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, 0.121612, -0.0104681, 0.29967)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P2/Button Hitbox 4"]
 shape = SubResource("ConvexPolygonShape3D_p4c6t")
 
-[node name="Button Hitbox 5" type="StaticBody3D" parent="Button Hitbox P2"]
+[node name="Button Hitbox 5" type="Area3D" parent="Button Hitbox P2"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, -0.125841, -0.0104672, 0.299114)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P2/Button Hitbox 5"]
 shape = SubResource("ConvexPolygonShape3D_rsli4")
 
-[node name="Button Hitbox 6" type="StaticBody3D" parent="Button Hitbox P2"]
+[node name="Button Hitbox 6" type="Area3D" parent="Button Hitbox P2"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, -0.298886, -0.0104655, 0.122883)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P2/Button Hitbox 6"]
 shape = SubResource("ConvexPolygonShape3D_rx71p")
 
-[node name="Button Hitbox 7" type="StaticBody3D" parent="Button Hitbox P2"]
+[node name="Button Hitbox 7" type="Area3D" parent="Button Hitbox P2"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, -0.299144, -0.0104662, -0.123436)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P2/Button Hitbox 7"]
 shape = SubResource("ConvexPolygonShape3D_gt3lt")
 
-[node name="Button Hitbox 8" type="StaticBody3D" parent="Button Hitbox P2"]
+[node name="Button Hitbox 8" type="Area3D" parent="Button Hitbox P2"]
 transform = Transform3D(0.92388, 0, 0.382684, 0, 1, 0, -0.382684, 0, 0.92388, -0.124777, -0.0104695, -0.299805)
+script = ExtResource("6_3y225")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button Hitbox P2/Button Hitbox 8"]
 shape = SubResource("ConvexPolygonShape3D_h2b11")
@@ -1875,9 +1973,17 @@ script = ExtResource("5_em5tn")
 script = ExtResource("5_em5tn")
 PortName = "COM6"
 
-[node name="LightSerial P1" type="Node" parent="."]
+[node name="LightSerial P1" type="Node" parent="." node_paths=PackedStringArray("ButtonsRoot", "BodyLight", "DisplayLight", "SideLight")]
 script = ExtResource("6_5oknp")
+ButtonsRoot = NodePath("../Body P1/Controller P1/Buttons P1")
+BodyLight = NodePath("../Body P1/BodyLight P1")
+DisplayLight = NodePath("../Body P1/DisplayLight P1")
+SideLight = NodePath("../Body P1/SideLight P1")
 
-[node name="LightSerial P2" type="Node" parent="."]
+[node name="LightSerial P2" type="Node" parent="." node_paths=PackedStringArray("ButtonsRoot", "BodyLight", "DisplayLight", "SideLight")]
 script = ExtResource("6_5oknp")
-Port = "COM23"
+Port = "COM53"
+ButtonsRoot = NodePath("../Body P2/Controller P2/Buttons P2")
+BodyLight = NodePath("../Body P2/BodyLight P2")
+DisplayLight = NodePath("../Body P2/DisplayLight P2")
+SideLight = NodePath("../Body P2/SideLight P2")

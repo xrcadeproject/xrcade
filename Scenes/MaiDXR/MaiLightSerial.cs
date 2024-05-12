@@ -13,20 +13,22 @@ using System.Linq;
 public partial class MaiLightSerial : Node
 {
     [Export]
-    public string Port = "COM21";
+    public string Port = "COM51";
     [Export]
     public int BaudRate = 115200;
     [Export]
-	public Node3D RingLightsRoot;
+	public Node3D ButtonsRoot;
 	[Export]
 	public Light3D BodyLight, DisplayLight, SideLight;
     [Export]
     public int FadeResolution = 16;
+    [Export]
+    public float ButtonEmissionMultiplier = 1.5f;
     [Export (PropertyHint.Range, "0,1")]
-    public float ButtonLightNormalizeDimmer = 0.5f; // 0-1
+    public float ButtonNormalizer = 0.2f; // 0-1
 
-    private List<Light3D> RingLights;
-    private SerialPort lightSerial;
+    private List<MeshInstance3D> Buttons;
+    private SerialPort serial;
     private Thread thread;
     private List<byte[]> ringLightDataList = new List<byte[]>();
     private bool isrequestCMD = false;
@@ -59,7 +61,7 @@ public partial class MaiLightSerial : Node
     
     public override async void _Ready()
     {
-        RingLights = RingLightsRoot.GetChildren().OfType<Light3D>().ToList();
+        Buttons = ButtonsRoot.GetChildren().OfType<MeshInstance3D>().ToList();
 
         if (DisplayLight != null) // Godot bug fix see github.com/godotengine/godot/issues/78253
         {
@@ -69,13 +71,22 @@ public partial class MaiLightSerial : Node
         }
 
         // Turn off all lights
-        if (RingLights == null || DisplayLight == null || BodyLight == null || SideLight == null)
+        if (Buttons == null || DisplayLight == null || BodyLight == null || SideLight == null)
         {
-            GD.Print("Lights not found or not assigned properly. Please check the lights.");
+            GD.Print("Some Lights not found or not assigned properly. Please check the lights.");
             return;
         }
-        foreach (var light in RingLights)
-            light.LightColor = new Color(0, 0, 0);
+        foreach (var button in Buttons)
+        {
+            var material = new StandardMaterial3D()
+            {
+                EmissionEnabled = true,
+                Emission = new Color(0, 0, 0),
+                EmissionEnergyMultiplier = ButtonEmissionMultiplier
+            };
+                button.Mesh.SurfaceSetMaterial(0, material);
+        }
+            
         
         BodyLight.LightColor = new Color(0, 0, 0);
         DisplayLight.LightColor = new Color(0, 0, 0);
@@ -99,16 +110,16 @@ public partial class MaiLightSerial : Node
 
     public override void _ExitTree()
     {
-        lightSerial.Close();
+        serial.Close();
         thread.Interrupt();
     }
     private void initialSerial(string port, int baudRate)
     {
-        lightSerial = new SerialPort(port, baudRate);
+        serial = new SerialPort(port, baudRate);
         try
         {
             GD.Print("Try start LED Serial");
-            lightSerial.Open();
+            serial.Open();
         }
         catch (Exception ex)
         {
@@ -116,7 +127,7 @@ public partial class MaiLightSerial : Node
         }
         GD.Print($"LED Serial on {port} Started");
         thread = new Thread(new ParameterizedThreadStart(getDataListFrom));
-        thread.Start(lightSerial);
+        thread.Start(serial);
     }
 
     private void getDataListFrom(object Serial)
@@ -206,8 +217,8 @@ public partial class MaiLightSerial : Node
             fadeDuration = 0;
         else
             fadeDuration = 4095f / (float)data[7] * 8f / 1000f;
-        if (data[2] > RingLights.Count)
-            data[2] = (byte)RingLights.Count;
+        if (data[2] > Buttons.Count)
+            data[2] = (byte)Buttons.Count;
         fadeIndex[0] = data[1];
         fadeIndex[1] = data[2];
         fadeColor = Color.Color8(data[4], data[5], data[6]);
@@ -231,7 +242,16 @@ public partial class MaiLightSerial : Node
         // GD.Print(Port + " Ring Light Fade Process " + fadeElapsed + " " + fadeDuration + " " + progress);
         // GD.Print(Port + " Ring Light Fade Progress Color Before " + RingLights[0].LightColor);
         for (int i = fadeIndex[0]; i < fadeIndex[1]; i++)
-            RingLights[i].LightColor = dimmerColor(fadePrevColor.Lerp(fadeColor, progress));
+        {
+            var material = (StandardMaterial3D)Buttons[i].Mesh.SurfaceGetMaterial(0);
+            if (material != null)
+            {
+                material.Emission = dimmerColor(fadePrevColor.Lerp(fadeColor, progress));
+                Buttons[i].Mesh.SurfaceSetMaterial(0, material);
+            }
+            // Buttons[i].LightColor = dimmerColor(fadePrevColor.Lerp(fadeColor, progress));
+        }
+            
         // GD.Print(Port + " Ring Light Fade Progress Color " + RingLights[0].LightColor);
     }
 
@@ -248,13 +268,20 @@ public partial class MaiLightSerial : Node
         // GD.Print(index + " " + color);
         color = dimmerColor(color);
 
-		if (RingLights != null && RingLights.Count > index)
-			RingLights[index].LightColor = color;
+		if (Buttons != null && Buttons.Count > index)
+        {
+            var material = (StandardMaterial3D)Buttons[index].Mesh.SurfaceGetMaterial(0);
+            if (material != null)
+            {
+                material.Emission = color;
+                Buttons[index].Mesh.SurfaceSetMaterial(0, material);
+            }
+        }
     }
     private Color dimmerColor(Color color)
     {
-        float colorSum = color.R + color.G + color.B;
-        float factor = Math.Max(0, colorSum - 1) / 2 * ButtonLightNormalizeDimmer;
+        float colorSum = Math.Max(0, color.R + color.G + color.B - 2);
+        float factor = colorSum * ButtonNormalizer;
         return new Color(color.R - factor, color.G - factor, color.B - factor);
     }
 }
