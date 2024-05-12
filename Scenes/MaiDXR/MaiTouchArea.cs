@@ -22,7 +22,8 @@ public partial class MaiTouchArea : Area3D
 	{
 		GD.Print(this.Name + "Touch Entered" + "with " + area.Name);
 		insideColliderCount += 1;
-		touchSerial.ChangeTouch(touchAarea, true);
+		if (touchSerial != null)
+			touchSerial.ChangeTouch(touchAarea, true);
         touchDidChange?.Invoke();
 
 		if (area.Name.ToString()[0] == 'L')
@@ -37,7 +38,8 @@ public partial class MaiTouchArea : Area3D
 		insideColliderCount -= 1;
         if (insideColliderCount <= 0)
         {
-            touchSerial.ChangeTouch(touchAarea, false);
+			if (touchSerial != null)
+            	touchSerial.ChangeTouch(touchAarea, false);
             touchDidChange?.Invoke();
 			insideColliderCount = 0;
         }
