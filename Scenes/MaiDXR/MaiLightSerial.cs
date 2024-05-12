@@ -10,7 +10,7 @@ using Godot.Collections;
 using System.Threading.Tasks;
 using System.Linq;
 
-public partial class MaiLightSerialNode : Node
+public partial class MaiLightSerial : Node
 {
     [Export]
     public string Port = "COM21";
