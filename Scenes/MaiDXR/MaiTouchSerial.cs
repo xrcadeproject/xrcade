@@ -3,14 +3,17 @@ using System.IO.Ports;
 using System;
 using System.Collections;
 using System.Threading;
-public partial class MaiSerialManager : Node
+public partial class MaiTouchSerial : Node
 {
-    static SerialPort p1Serial = new SerialPort ("COM5", 9600);
-    static SerialPort p2Serial = new SerialPort ("COM6", 9600);
-    static byte[] settingPacket = new byte[6] {40, 0, 0, 0, 0, 41};
-    static byte[] touchData = new byte[9] {40, 0, 0, 0, 0, 0, 0, 0, 41};
-    static byte[] touchData2 = new byte[9] {40, 0, 0, 0, 0, 0, 0, 0, 41};
+    [Export]
+    public string PortName = "COM5";
+    [Export]
+    public int BaudRate = 9600;
+    private SerialPort serial;
+    private byte[] settingPacket = new byte[6] {40, 0, 0, 0, 0, 41};
+    private byte[] touchData = new byte[9] {40, 0, 0, 0, 0, 0, 0, 0, 41};
     public static bool startUp = false; //use ture for default start up state to prevent restart game
+    private bool isSerialReady = false;
     static string recivData;
     private Thread touchThread;
     private Queue touchQueue;
@@ -19,25 +22,30 @@ public partial class MaiSerialManager : Node
     {
         try
         {
-            GD.Print("Try start Serial");
-            p1Serial.Open();
-            p2Serial.Open();
+            GD.Print($"{PortName}: Try start Touch Serial with {BaudRate} baud rate");
+            serial = new SerialPort (PortName, BaudRate);
+            serial.Open();
+            isSerialReady = true;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to Open Serial Ports: {ex}");
+            Console.WriteLine($"{PortName}: Failed to Open Serial Ports: {ex}");
+            isSerialReady = false;
         }
         touchQueue = Queue.Synchronized(new Queue());
         touchThread = new Thread(TouchThread);
         MaiTouchArea.touchDidChange += PingTouchThread;
         touchThread.Start();
-        GD.Print("Serial Started");
+        GD.Print($"{PortName}: Serial Started");
     }
 
     public override void _Process(double delta)
     {
         if (Input.IsKeyPressed(Key.T))
-            startUp = !startUp;
+        {
+            GD.Print("force touch");
+            startUp = true;
+        }
     }
 	private void OnPingTouchThreadTimerTimeout()
 	{
@@ -51,10 +59,8 @@ public partial class MaiSerialManager : Node
     {
         while(true)
         {
-            if(p1Serial.IsOpen)
-                ReadData(p1Serial);
-            if(p2Serial.IsOpen)
-                ReadData(p2Serial);
+            if(serial.IsOpen)
+                ReadData(serial);
             if(touchQueue.Count > 0)
             {
                 touchQueue.Dequeue();
@@ -62,11 +68,10 @@ public partial class MaiSerialManager : Node
             }
         }
     }
-    private void OnDestroy()
+    public override void _ExitTree()
     {
-        touchThread.Abort();
-        p1Serial.Close();
-        p2Serial.Close();
+        touchThread.Interrupt();
+        serial.Close();
     }
 
     private void ReadData(SerialPort Serial)
@@ -96,20 +101,16 @@ public partial class MaiSerialManager : Node
                 break;
         }
     }
-    public static void UpdateTouch()
+    private void UpdateTouch()
     {
-        if (!startUp)
+        if (!startUp || !isSerialReady)
             return;
-		p1Serial.Write(touchData, 0, 9);
-		p2Serial.Write(touchData2, 0, 9);
+		serial.Write(touchData, 0, 9);
     }
 
-    public static void ChangeTouch(bool isP1, TouchArea touchArea, bool State)
+    public void ChangeTouch(TouchArea touchArea, bool State)
     {
-        if (isP1)
-            ByteArrayExt.SetBit(touchData, (int)touchArea + 8, State);
-        else
-            ByteArrayExt.SetBit(touchData2, (int)touchArea + 8, State);
+        ByteArrayExt.SetBit(touchData, (int)touchArea + 8, State);
     }
 	public enum TouchArea
     {
