@@ -3,38 +3,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+
 public partial class MaiTouchArea : Area3D
 {
 	[Export]
-	private bool isPlayer1 = true;
-	private MaiSerialManager.TouchArea touchAarea;
-	private int _insideColliderCount = 0;
+	public MaiTouchSerial touchSerial;
+	private MaiTouchSerial.TouchArea touchAarea;
+	private int insideColliderCount = 0;
 	public static event Action touchDidChange;
 	public override void _Ready()
 	{
 		this.AreaEntered += OnTochEntered; 
 		this.AreaExited += OnTochExited;
-		touchAarea = (MaiSerialManager.TouchArea)Enum.Parse(typeof(MaiSerialManager.TouchArea), this.Name);
+		touchAarea = (MaiTouchSerial.TouchArea)Enum.Parse(typeof(MaiTouchSerial.TouchArea), this.Name);
 	}
 
 	private void OnTochEntered(Area3D area)
 	{
-		GD.Print(this.Name + "Touch Entered");
-		_insideColliderCount += 1;
-		MaiSerialManager.ChangeTouch(isPlayer1, touchAarea, true);
+		GD.Print(this.Name + "Touch Entered" + "with " + area.Name);
+		insideColliderCount += 1;
+		touchSerial.ChangeTouch(touchAarea, true);
         touchDidChange?.Invoke();
+
+		if (area.Name.ToString()[0] == 'L')
+			XRHaptic.SendHapticPulse(XRHaptic.Hand.Left, XRHaptic.HapticType.Medium);
+		else if (area.Name.ToString()[0] == 'R')
+			XRHaptic.SendHapticPulse(XRHaptic.Hand.Right, XRHaptic.HapticType.Medium);
 	}
 
 	private void OnTochExited(Area3D area)
 	{
-		GD.Print(this.Name + "Touch Exited");
-		_insideColliderCount -= 1;
-        if (_insideColliderCount <= 0)
+		GD.Print(this.Name + "Touch Exited" + "with " + area.Name);
+		insideColliderCount -= 1;
+        if (insideColliderCount <= 0)
         {
-            MaiSerialManager.ChangeTouch(isPlayer1, touchAarea, false);
+            touchSerial.ChangeTouch(touchAarea, false);
             touchDidChange?.Invoke();
-			_insideColliderCount = 0;
+			insideColliderCount = 0;
         }
+
+		if (area.Name.ToString()[0] == 'L')
+			XRHaptic.SendHapticPulse(XRHaptic.Hand.Left, XRHaptic.HapticType.Light);
+		else if (area.Name.ToString()[0] == 'R')
+			XRHaptic.SendHapticPulse(XRHaptic.Hand.Right, XRHaptic.HapticType.Light);
 	}
 	
 }
