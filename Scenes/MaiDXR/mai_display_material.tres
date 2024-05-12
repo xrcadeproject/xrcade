@@ -16,8 +16,8 @@ image = SubResource("Image_8cef0")
 [resource]
 resource_name = "DisplayP1"
 cull_mode = 2
-albedo_color = Color(0.380582, 0.380582, 0.380582, 1)
+albedo_color = Color(0.196078, 0.196078, 0.196078, 1)
 metallic = 1.0
-roughness = 0.0618182
+roughness = 0.15
 emission_enabled = true
 emission_texture = SubResource("SpoutTexture_q5hi0")

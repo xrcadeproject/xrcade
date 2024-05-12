@@ -63,8 +63,9 @@ public partial class MaiLightSerial : Node
 
         if (DisplayLight != null) // Godot bug fix see github.com/godotengine/godot/issues/78253
         {
+            var mask = DisplayLight.LightCullMask;
             await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
-            DisplayLight.LightCullMask = 4294443007; 
+            DisplayLight.LightCullMask = mask; 
         }
 
         // Turn off all lights
