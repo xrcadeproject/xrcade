@@ -672,7 +672,6 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 6,
 "index_data": PackedByteArray(0, 0, 3, 0, 1, 0, 0, 0, 2, 0, 3, 0),
-"material": ExtResource("3_em3hs"),
 "name": "DisplayP1",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -745,7 +744,6 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 6,
 "index_data": PackedByteArray(0, 0, 3, 0, 1, 0, 0, 0, 2, 0, 3, 0),
-"material": ExtResource("3_em3hs"),
 "name": "DisplayP2",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -1231,6 +1229,7 @@ transform = Transform3D(1.00024, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.9396
 layers = 2
 mesh = SubResource("ArrayMesh_mkfpm")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("3_em3hs")
 
 [node name="DisplayLight P1" type="OmniLight3D" parent="Body P1"]
 transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 1.21965, 0.224439)
@@ -1303,10 +1302,11 @@ mesh = SubResource("ArrayMesh_1cmfw")
 skeleton = NodePath("")
 
 [node name="Display P2" type="MeshInstance3D" parent="Body P2"]
-transform = Transform3D(1.00024, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.346367, 0.162633)
+transform = Transform3D(1.00024, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0.000189183, 0.349966, 0.161323)
 layers = 2
 mesh = SubResource("ArrayMesh_16766")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("3_em3hs")
 
 [node name="DisplayLight P2" type="OmniLight3D" parent="Body P2"]
 transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 1.01328e-05, 0.171994, 0.314927)
