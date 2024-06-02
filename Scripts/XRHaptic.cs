@@ -1,9 +1,11 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public partial class XRHaptic : Node
 {
+	public static XRHaptic instance;
 	private XROrigin3D origin;
 	private static XRNode3D leftHandNode, rightHandNode;
 	private static bool initialized = false;	
@@ -20,35 +22,55 @@ public partial class XRHaptic : Node
 		Heavy
 	}
 
-	private static Dictionary<string, double[]> hapticTypePreset = new Dictionary<string, double[]>()
+	private static Dictionary<string, List<double[]>> hapticSequencePreset = new Dictionary<string, List<double[]>>()
 	{
-		{ "Light", new double[] { 0.5, 0.02 } },
-		{ "Medium", new double[] { 0.7, 0.06 } },
-		{ "Heavy", new double[] { 1.0, 0.1 } }
+		{ "Light", new List<double[]> { // List = vibration sequences
+			new double[] { 0, 0.3, 0.01 }, // { frequency, amplitude, duration }
+			new double[] { 0, 0, 0.01 },
+			new double[] { 1000, 1, 0.0075 },
+			} 
+		},
+		{ "Medium", new List<double[]> {
+			new double[] { 0, 0.6, 0.02 },
+			new double[] { 0, 0, 0.01 },
+			new double[] { 1000, 1, 0.0075 },
+			}
+		},
+		{ "Heavy", new List<double[]> {
+			new double[] { 0, 1, 0.04 },
+			new double[] { 0, 0, 0.01 },
+			new double[] { 1000, 1, 0.0075 },
+			}
+		},
 	};
 
 	public override void _Ready()
 	{
-		if (!initialized)
-		{
-			initialize();
-			initialized = true;
-		}
+		initialize();
 	}
 
 	private void initialize()
 	{
+		if (initialized)
+			return;
+		instance = this;
 		origin = this.GetParent<XROrigin3D>();
 		leftHandNode = origin.GetNode<XRNode3D>("LeftHand");
 		rightHandNode = origin.GetNode<XRNode3D>("RightHand");
+		initialized = true;
 	}
 
-	public static void SendHapticPulse(Hand hand, HapticType type)
+	public async void SendHapticPulse(Hand hand, HapticType type)
 	{
-		string handName = hand.ToString();
-		string hapticName = type.ToString();
-		double[] hapticData = hapticTypePreset[hapticName];
+		initialize();
 		XRNode3D controller = hand == Hand.Left ? leftHandNode : rightHandNode;
-		controller.TriggerHapticPulse("haptic", 0, hapticData[0], hapticData[1], 0);
+		string hapticName = type.ToString();
+		// double lastHapticTime = 0;
+		foreach (var hapticData in hapticSequencePreset[hapticName])
+		{
+			controller.TriggerHapticPulse("haptic", hapticData[0], hapticData[1], hapticData[2], 0);
+			await ToSignal(instance.GetTree().CreateTimer(hapticData[2]), "timeout");
+			// lastHapticTime += hapticData[2];
+		}
 	}
 }
