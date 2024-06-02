@@ -27,9 +27,9 @@ public partial class MaiTouchArea : Area3D
         touchDidChange?.Invoke();
 
 		if (area.Name.ToString()[0] == 'L')
-			XRHaptic.SendHapticPulse(XRHaptic.Hand.Left, XRHaptic.HapticType.Medium);
+			XRHaptic.instance.SendHapticPulse(XRHaptic.Hand.Left, XRHaptic.HapticType.Medium);
 		else if (area.Name.ToString()[0] == 'R')
-			XRHaptic.SendHapticPulse(XRHaptic.Hand.Right, XRHaptic.HapticType.Medium);
+			XRHaptic.instance.SendHapticPulse(XRHaptic.Hand.Right, XRHaptic.HapticType.Medium);
 	}
 
 	private void OnTochExited(Area3D area)
@@ -45,9 +45,9 @@ public partial class MaiTouchArea : Area3D
         }
 
 		if (area.Name.ToString()[0] == 'L')
-			XRHaptic.SendHapticPulse(XRHaptic.Hand.Left, XRHaptic.HapticType.Light);
+			XRHaptic.instance.SendHapticPulse(XRHaptic.Hand.Left, XRHaptic.HapticType.Light);
 		else if (area.Name.ToString()[0] == 'R')
-			XRHaptic.SendHapticPulse(XRHaptic.Hand.Right, XRHaptic.HapticType.Light);
+			XRHaptic.instance.SendHapticPulse(XRHaptic.Hand.Right, XRHaptic.HapticType.Light);
 	}
 	
 }
