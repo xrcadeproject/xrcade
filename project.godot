@@ -12,7 +12,7 @@ config_version=5
 
 config/name="xrcade"
 config/version="0.0.1"
-run/main_scene="res://Scenes/UI/start_up_menu.tscn"
+run/main_scene="res://Scenes/Main/main.tscn"
 config/features=PackedStringArray("4.3", "C#", "Mobile")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
@@ -75,4 +75,5 @@ renderer/rendering_method.mobile="gl_compatibility"
 
 [xr]
 
+openxr/enabled=true
 shaders/enabled=true
