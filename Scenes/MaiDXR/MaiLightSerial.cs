@@ -99,9 +99,9 @@ public partial class MaiLightSerial : Node
     {
         if (dataBytesList.Count > 0)
         {
-            for (int i = 0; i < dataBytesList.Count; i++)
+            foreach (var data in dataBytesList)
             {
-                executeCMD(dataBytesList[i]);
+                executeCMD(data);
             }
             dataBytesList.Clear();
         }
@@ -280,7 +280,7 @@ public partial class MaiLightSerial : Node
     }
     private Color dimmerColor(Color color)
     {
-        float colorSum = Math.Max(0, color.R + color.G + color.B - 2);
+        float colorSum = Math.Max(0, color.R + color.G + color.B - 2.5f) / 0.5f;
         float factor = colorSum * ButtonNormalizer;
         return new Color(color.R - factor, color.G - factor, color.B - factor);
     }

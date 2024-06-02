@@ -34,9 +34,9 @@ public partial class Area3DToKeyPress : Area3D
 		insideColliderCount += 1;
 
 		if (area.Name.ToString()[0] == 'L')
-			XRHaptic.SendHapticPulse(XRHaptic.Hand.Left, XRHaptic.HapticType.Heavy);
+			XRHaptic.instance.SendHapticPulse(XRHaptic.Hand.Left, XRHaptic.HapticType.Heavy);
 		else if (area.Name.ToString()[0] == 'R')
-			XRHaptic.SendHapticPulse(XRHaptic.Hand.Right, XRHaptic.HapticType.Heavy);
+			XRHaptic.instance.SendHapticPulse(XRHaptic.Hand.Right, XRHaptic.HapticType.Heavy);
 		GD.Print(this.Name + " Entered" + "with " + area.Name);
 	}
 
@@ -57,9 +57,9 @@ public partial class Area3DToKeyPress : Area3D
 		}
 
 		if (area.Name.ToString()[0] == 'L')
-			XRHaptic.SendHapticPulse(XRHaptic.Hand.Left, XRHaptic.HapticType.Medium);
+			XRHaptic.instance.SendHapticPulse(XRHaptic.Hand.Left, XRHaptic.HapticType.Medium);
 		else if (area.Name.ToString()[0] == 'R')
-			XRHaptic.SendHapticPulse(XRHaptic.Hand.Right, XRHaptic.HapticType.Medium);
+			XRHaptic.instance.SendHapticPulse(XRHaptic.Hand.Right, XRHaptic.HapticType.Medium);
 		GD.Print(this.Name + " Exited" + "with " + area.Name);
 	}
 
