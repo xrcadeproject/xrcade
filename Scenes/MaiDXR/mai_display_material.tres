@@ -1,6 +1,6 @@
 [gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dmtwdx3xhad0e"]
 
-[sub_resource type="Image" id="Image_t44fr"]
+[sub_resource type="Image" id="Image_gstn4"]
 data = {
 "data": PackedByteArray(0, 0, 0, 0),
 "format": "RGBA8",
@@ -11,7 +11,7 @@ data = {
 
 [sub_resource type="SpoutTexture" id="SpoutTexture_q5hi0"]
 sender_name = "DXHook"
-image = SubResource("Image_t44fr")
+image = SubResource("Image_gstn4")
 
 [resource]
 resource_name = "DisplayP1"

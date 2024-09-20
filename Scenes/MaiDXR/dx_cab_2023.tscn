@@ -1,14 +1,14 @@
-[gd_scene load_steps=121 format=4 uid="uid://d4k8e0tnj8xvx"]
+[gd_scene load_steps=127 format=4 uid="uid://d4k8e0tnj8xvx"]
 
 [ext_resource type="Texture2D" uid="uid://cm7cqg0q6aqsj" path="res://Models/DXCab2023/DXCab2023_BodyP1Texture.png" id="1_ghkog"]
 [ext_resource type="Texture2D" uid="uid://c42e567m5xwye" path="res://Models/DXCab2023/DXCab2023_BodyP1Texture_1.png" id="2_ap4fp"]
 [ext_resource type="Material" uid="uid://dmtwdx3xhad0e" path="res://Scenes/MaiDXR/mai_display_material.tres" id="3_em3hs"]
 [ext_resource type="Texture2D" uid="uid://btuane0d3mb3t" path="res://Models/DXCab2023/DXCab2023_BodyP2Texture.png" id="3_twtg8"]
-[ext_resource type="Script" path="res://Scenes/MaiDXR/MaiTouchSerial.cs" id="5_em5tn"]
-[ext_resource type="Script" path="res://Scenes/MaiDXR/MaiTouchArea.cs" id="5_if7sb"]
+[ext_resource type="Script" path="res://Scenes/MaiDXR/Scripts/MaiTouchSerial.cs" id="5_em5tn"]
+[ext_resource type="Script" path="res://Scenes/MaiDXR/Scripts/MaiTouchArea.cs" id="5_if7sb"]
 [ext_resource type="Script" path="res://Scripts/InjectCaptureHook.cs" id="5_m3qyu"]
 [ext_resource type="Script" path="res://Scripts/Area3DToKeyPress.cs" id="6_1jek3"]
-[ext_resource type="Script" path="res://Scenes/MaiDXR/MaiLightSerial.cs" id="6_5oknp"]
+[ext_resource type="Script" path="res://Scenes/MaiDXR/Scripts/MaiLightSerial.cs" id="6_5oknp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g4hww"]
 resource_name = "Cap"
@@ -825,6 +825,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_tar0f")
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_k2hty"]
+points = PackedVector3Array(-1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1)
+
 [sub_resource type="ArrayMesh" id="ArrayMesh_ui5yh"]
 _surfaces = [{
 "aabb": AABB(-1, -1, -1, 2, 2, 2.00001),
@@ -857,6 +860,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ui5yh")
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hy0e1"]
+points = PackedVector3Array(-1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1)
+
 [sub_resource type="ArrayMesh" id="ArrayMesh_ain4d"]
 _surfaces = [{
 "aabb": AABB(-1, -1, -1, 2, 2, 2.00001),
@@ -888,6 +894,9 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ain4d")
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_k3ntq"]
+points = PackedVector3Array(-1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eay4d"]
 resource_name = "Lock"
@@ -927,6 +936,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_8b1bk")
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_riq5h"]
+points = PackedVector3Array(-1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tb2dh"]
 resource_name = "Enter"
 cull_mode = 2
@@ -965,6 +977,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_qp4sh")
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_00c3a"]
+points = PackedVector3Array(-0.0375, -0.0612702, -0.0430488, 0.037249, 0.0613948, 0.0432, -0.0375, 0.0612702, 0.0431123, 0.037304, 0.0614851, -0.0432, 0.037249, -0.0613948, 0.0432, 0.037304, -0.0614851, -0.0432, -0.0375, 0.0612702, -0.0430488, -0.0375, -0.0612702, 0.0431123)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ppnhl"]
 resource_name = "Select"
 cull_mode = 2
@@ -1002,6 +1017,9 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_w7tk7")
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_h3nkn"]
+points = PackedVector3Array(-0.0217108, 0.00225553, 0.0438857, 0.00982508, -0.0196857, -0.0438857, 0.0115, -0.0184943, -0.0412564, 0.00982508, 0.0200857, -0.0438857, -0.0230822, 0.000885177, -0.0438857, 0.00982508, -0.0196857, 0.0438857, 0.0115, 0.0188943, 0.0412564, -0.0203394, -0.00322589, 0.0438857, 0.00982508, 0.0200857, 0.0438857, -0.0203394, -0.00322589, -0.0438857, 0.0115, -0.0184943, 0.0412564, 0.0115, 0.0188943, -0.0412564, 0.00159651, -0.0155708, -0.0438857, -0.0217108, 0.00225553, -0.0438857, 0.00159651, -0.0155708, 0.0438857, -0.0230822, 0.000885177, 0.0438857, -0.00251778, 0.0132262, -0.0438857, -0.00251778, 0.0132262, 0.0438857)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_m27kr"]
 points = PackedVector3Array(-0.0227012, 0.241544, 0.0780787, 0.0552101, 0.241544, 0.0175129, -0.070261, 0.241544, -0.0389864, -0.0227012, -0.246747, 0.0780787, 0.0552224, -0.246747, 0.0175129, 0.054424, 0.241544, -0.0047707, 0.0251658, 0.241544, -0.0521551, -0.070261, -0.246747, -0.0389864, 0.054424, -0.246747, -0.0047707, 0.040409, 0.241544, -0.0364623, 0.0251658, -0.246747, -0.0521551, 0.040409, -0.246747, -0.0364623)
@@ -1338,30 +1356,68 @@ transform = Transform3D(0.0156977, 0, 0, 0, 0.023651, 0.0081012, 0, -0.0081012, 
 mesh = SubResource("ArrayMesh_vy2sx")
 skeleton = NodePath("")
 
+[node name="Area3D" type="Area3D" parent="Side Box Front/Button 1"]
+script = ExtResource("6_1jek3")
+Key = 49
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Side Box Front/Button 1/Area3D"]
+shape = SubResource("ConvexPolygonShape3D_k2hty")
+
 [node name="Button 2" type="MeshInstance3D" parent="Side Box Front"]
 transform = Transform3D(0.0156977, 0, 0, 0, 0.0154913, 0.0196219, 0, -0.0196219, 0.0154913, -0.00187631, -0.199887, 0.304296)
 mesh = SubResource("ArrayMesh_7psh5")
 skeleton = NodePath("")
+
+[node name="Area3D" type="Area3D" parent="Side Box Front/Button 2"]
+script = ExtResource("6_1jek3")
+Key = 48
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Side Box Front/Button 2/Area3D"]
+shape = SubResource("ConvexPolygonShape3D_hy0e1")
 
 [node name="Button 3" type="MeshInstance3D" parent="Side Box Front"]
 transform = Transform3D(0.0156977, 0, 0, 0, 0.025, 0, 0, 0, 0.025, -0.00187631, -0.280272, 0.358008)
 mesh = SubResource("ArrayMesh_t7ija")
 skeleton = NodePath("")
 
+[node name="Area3D" type="Area3D" parent="Side Box Front/Button 3"]
+script = ExtResource("6_1jek3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Side Box Front/Button 3/Area3D"]
+shape = SubResource("ConvexPolygonShape3D_k3ntq")
+
 [node name="Button 4" type="MeshInstance3D" parent="Side Box Front"]
 transform = Transform3D(0.0156977, 0, 0, 0, 0.025, 0, 0, 0, 0.025, -0.00187631, -0.392794, 0.358008)
 mesh = SubResource("ArrayMesh_jrla0")
 skeleton = NodePath("")
+
+[node name="Area3D" type="Area3D" parent="Side Box Front/Button 4"]
+script = ExtResource("6_1jek3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Side Box Front/Button 4/Area3D"]
+shape = SubResource("ConvexPolygonShape3D_riq5h")
 
 [node name="Enter" type="MeshInstance3D" parent="Side Box Front"]
 transform = Transform3D(0.627908, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0.000732301, 0.194532, 0.194018)
 mesh = SubResource("ArrayMesh_tvt6h")
 skeleton = NodePath("")
 
+[node name="Area3D" type="Area3D" parent="Side Box Front/Enter"]
+script = ExtResource("6_1jek3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Side Box Front/Enter/Area3D"]
+shape = SubResource("ConvexPolygonShape3D_00c3a")
+
 [node name="Select" type="MeshInstance3D" parent="Side Box Front"]
 transform = Transform3D(0.627908, 0, 0, 0, 0.930418, 0.366501, 0, -0.366501, 0.930418, 0.00115753, 0.304122, 0.15413)
 mesh = SubResource("ArrayMesh_f3a72")
 skeleton = NodePath("")
+
+[node name="Area3D" type="Area3D" parent="Side Box Front/Select"]
+script = ExtResource("6_1jek3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Side Box Front/Select/Area3D"]
+shape = SubResource("ConvexPolygonShape3D_h3nkn")
 
 [node name="Touch Hitbox P1" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.34202, -0.939693, 0, 0.939693, 0.34202, -0.515, 1.19263, 0.0189865)
