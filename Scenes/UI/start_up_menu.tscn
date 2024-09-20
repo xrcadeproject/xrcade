@@ -1,7 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://7qbiqdd48kwr"]
+[gd_scene load_steps=4 format=3 uid="uid://7qbiqdd48kwr"]
 
 [ext_resource type="Texture2D" uid="uid://cj2r1f4ugthjp" path="res://Images/CanvasBG.png" id="1_82u1t"]
 [ext_resource type="Script" path="res://Scenes/UI/StartUpMenu.cs" id="1_jaekc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbc76"]
+bg_color = Color(0.164751, 0.164751, 0.164751, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.703772, 0.703772, 0.703772, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="StartUpMenu" type="Control"]
 layout_mode = 3
@@ -15,6 +27,7 @@ size_flags_vertical = 4
 script = ExtResource("1_jaekc")
 
 [node name="BG" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,58 +37,16 @@ grow_vertical = 2
 texture = ExtResource("1_82u1t")
 expand_mode = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -143.5
-offset_top = -65.0
-offset_right = 143.5
-offset_bottom = 65.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 15
-
-[node name="Logo" type="RichTextLabel" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 56
-bbcode_enabled = true
-text = "[center]XRcade[/center]"
-fit_content = true
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 50
-
-[node name="SinglePlayButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Single Play"
-
-[node name="MultiPlayButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Multi Play"
-
-[node name="SettingButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -76.0
-offset_bottom = 26.0
-grow_horizontal = 0
-size_flags_horizontal = 3
-text = "Settings"
-
 [node name="SettingPanel" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 160.0
+offset_top = 90.0
+offset_right = -160.0
+offset_bottom = -90.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -89,4 +60,149 @@ grow_vertical = 2
 texture = ExtResource("1_82u1t")
 expand_mode = 1
 
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/SinglePlayButton" to="." method="OnSinglePlayButtonPressed"]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModeSelect" type="Panel" parent="HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+theme_override_styles/panel = SubResource("StyleBoxFlat_tbc76")
+
+[node name="SettingButton" type="Button" parent="HBoxContainer/ModeSelect"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -121.0
+offset_top = 11.0
+offset_right = -11.0
+offset_bottom = 51.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+text = "Settings"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ModeSelect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -103.0
+offset_top = -72.0
+offset_right = 103.0
+offset_bottom = 72.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="Logo" type="RichTextLabel" parent="HBoxContainer/ModeSelect/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 48
+bbcode_enabled = true
+text = "[center]XRcade[/center]"
+fit_content = true
+
+[node name="SinglePlayButton" type="Button" parent="HBoxContainer/ModeSelect/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Single Play"
+
+[node name="MultiPlayButton" type="Button" parent="HBoxContainer/ModeSelect/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Multi Play"
+
+[node name="ScebePreview" type="Panel" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+theme_override_styles/panel = SubResource("StyleBoxFlat_tbc76")
+
+[node name="SceneBrowser" type="Panel" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_tbc76")
+
+[node name="TabContainer" type="TabContainer" parent="HBoxContainer/SceneBrowser"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 8.0
+offset_right = -6.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
+
+[node name="Game" type="TabBar" parent="HBoxContainer/SceneBrowser/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Next" type="Button" parent="HBoxContainer/SceneBrowser/TabContainer/Game"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -139.0
+offset_top = -56.0
+offset_right = -19.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Next"
+
+[node name="Cabinet" type="TabBar" parent="HBoxContainer/SceneBrowser/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Next" type="Button" parent="HBoxContainer/SceneBrowser/TabContainer/Cabinet"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -139.0
+offset_top = -56.0
+offset_right = -19.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Next"
+
+[node name="World" type="TabBar" parent="HBoxContainer/SceneBrowser/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="Next" type="Button" parent="HBoxContainer/SceneBrowser/TabContainer/World"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -179.0
+offset_top = -56.0
+offset_right = -19.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Link Start"
+
+[connection signal="pressed" from="HBoxContainer/ModeSelect/VBoxContainer/SinglePlayButton" to="." method="OnSinglePlayButtonPressed"]
